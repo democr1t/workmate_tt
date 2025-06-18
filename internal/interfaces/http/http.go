@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"time"
 	"workmate_tt/internal/application"
@@ -13,11 +14,6 @@ type TaskHandler struct {
 
 func NewTaskHandler(service *application.TaskService) *TaskHandler {
 	return &TaskHandler{service: service}
-}
-
-// CreateTaskRequest структура запроса на создание задачи
-type CreateTaskRequest struct {
-	Params interface{} `json:"params"`
 }
 
 // TaskResponse структура ответа с информацией о задаче
@@ -33,14 +29,9 @@ type TaskResponse struct {
 }
 
 func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
-	var req CreateTaskRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	task, err := h.service.CreateTask(req.Params)
+	task, err := h.service.CreateTask()
 	if err != nil {
+		slog.Error("cant create task", "err", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

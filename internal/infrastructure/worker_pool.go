@@ -36,7 +36,7 @@ func (p *WorkerPool) worker() {
 		task.Start()
 		_ = p.taskRepo.Update(task)
 
-		result, err := p.taskFunc(task.Params)
+		result, err := p.taskFunc()
 
 		task.Complete(result, err)
 		_ = p.taskRepo.Update(task)

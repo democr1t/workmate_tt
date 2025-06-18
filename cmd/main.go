@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -11,20 +10,18 @@ import (
 	"workmate_tt/internal/application"
 	"workmate_tt/internal/infrastructure"
 	consumers "workmate_tt/internal/interfaces/http"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	godotenv.Load()
 	taskRepo := infrastructure.NewMemoryTaskRepository()
 
-	taskFunc := func(params interface{}) (interface{}, error) {
-		duration, ok := params.(float64)
-		if !ok {
-			return nil, fmt.Errorf("invalid params type, expected number")
-		}
+	taskFunc := func() (interface{}, error) {
 
-		time.Sleep(time.Duration(duration) * time.Second)
-		return fmt.Sprintf("Processed in %.2f seconds", duration), nil
+		time.Sleep(time.Duration(3) * time.Second)
+		return fmt.Sprintf("Processed in %.2f seconds", 3.0), nil
 	}
 
 	maxWorkers := runtime.NumCPU()

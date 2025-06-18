@@ -1,9 +1,10 @@
 package application
 
 import (
-	"github.com/google/uuid"
 	"workmate_tt/internal/domain"
 	"workmate_tt/internal/infrastructure"
+
+	"github.com/google/uuid"
 )
 
 type TaskService struct {
@@ -25,9 +26,9 @@ func NewTaskService(
 	}
 }
 
-func (s *TaskService) CreateTask(params interface{}) (*TaskDTO, error) {
+func (s *TaskService) CreateTask() (*TaskDTO, error) {
 	taskID := uuid.New()
-	task := domain.NewTask(taskID.String(), params)
+	task := domain.NewTask(taskID.String())
 
 	if err := s.taskRepo.Create(task); err != nil {
 		return nil, err

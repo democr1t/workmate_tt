@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type TaskFunction func(params interface{}) (interface{}, error)
+type TaskFunction func() (interface{}, error)
 
 var (
 	ErrTaskNotFound = errors.New("task not found")
@@ -22,7 +22,6 @@ const (
 
 type Task struct {
 	ID          string
-	Params      interface{} // Параметры для функции
 	Status      TaskStatus
 	Result      interface{}
 	Error       error
@@ -31,10 +30,9 @@ type Task struct {
 	CompletedAt *time.Time
 }
 
-func NewTask(id string, params interface{}) *Task {
+func NewTask(id string) *Task {
 	return &Task{
 		ID:        id,
-		Params:    params,
 		Status:    StatusPending,
 		CreatedAt: time.Now(),
 	}
