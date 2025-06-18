@@ -9,7 +9,7 @@ func NewRouter(service *application.TaskService) http.Handler {
 	handler := NewTaskHandler(service)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /tasks/create", handler.CreateTask)
+	mux.HandleFunc("POST /tasks", handler.CreateTask)
 	mux.HandleFunc("GET /tasks", handler.GetTask)
 	mux.HandleFunc("GET /tasks/all", handler.GetAllTasks)
 	mux.HandleFunc("DELETE /tasks", handler.DeleteTask)
